@@ -4,6 +4,12 @@
 name: Gradle Package
 
 on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
   release:
     types: [created]
 
@@ -27,11 +33,8 @@ jobs:
 
     - name: Build with Gradle
       run: gradle build
-
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    - name: Publish to GitHub Packages
-      run: gradle publish
-      env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: forge-1.16.5-36.2.6_mapped_snapshot_20210309-1.16.5.jar
+        path: /home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.16.5-36.2.6_mapped_snapshot_20210309-1.16.5/forge-1.16.5-36.2.6_mapped_snapshot_20210309-1.16.5.jar
